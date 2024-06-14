@@ -35,7 +35,8 @@ def pinecone_query(query: str, with_expansion: bool = False) -> str:
             {query}
 
         """
-        query = model.generate_content(prompt)
+        res = model.generate_content(prompt)
+        query = res.text
 
     query_vector_ = genai.embed_content(content=query,
                                         model='models/embedding-001')
@@ -73,7 +74,8 @@ if "user_query" not in st.session_state:
 if "retrieval" not in st.session_state:
     st.session_state.retrieval = ''
 
-st.session_state.retrieval = pinecone_query(st.session_state.user_query)
+st.session_state.retrieval = pinecone_query(st.session_state.user_query,
+                                            with_expansion=True)
 
 if "generation" not in st.session_state:
     st.session_state.generation = ''
