@@ -69,7 +69,7 @@ def llm_answer_query(context: str) -> str:
 # STREAMLIT AREA
 
 st.write("# EconWiki")
-st.write("A repository for IMF documents")
+st.write("## A repository for IMF documents")
 
 st.text_input(label="Ask a question",
               value="What is the role of the IMF in Kenya?",
