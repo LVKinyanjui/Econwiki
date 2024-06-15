@@ -51,7 +51,7 @@ def pinecone_query(query: str, with_expansion: bool = False) -> str:
 
     return '\n\n'.join([match['metadata']['text'] for match in res['matches']])
 
-
+@st.cache_data
 def llm_answer_query(context: str) -> str:
     prompt = f"""
         You are provided with a text to summarize
@@ -68,7 +68,9 @@ def llm_answer_query(context: str) -> str:
 # -------------------------------------------------------------
 # STREAMLIT AREA
 
-st.text_input(label="User Query",
+st.write("# EconWiki")
+
+st.text_input(label="Ask a question",
               value="What is the role of the IMF in Kenya?",
               placeholder='Enter your question',
               key='user_query')
@@ -87,4 +89,6 @@ st.session_state.generation = llm_answer_query(st.session_state.retrieval)
 
 st.button('Submit')
 st.write(st.session_state.generation)
-st.write(st.session_state.retrieval)
+
+with st.expander("Retrieved Database Records"):
+    st.write(st.session_state.retrieval)
