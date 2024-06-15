@@ -68,8 +68,10 @@ def llm_answer_query(context: str) -> str:
 # -------------------------------------------------------------
 # STREAMLIT AREA
 
-if "user_query" not in st.session_state:
-    st.session_state.user_query = ''
+st.text_input(label="User Query",
+              value="What is the role of the IMF in Kenya?",
+              placeholder='Enter your question',
+              key='user_query')
 
 if "retrieval" not in st.session_state:
     st.session_state.retrieval = ''
@@ -82,10 +84,6 @@ if "generation" not in st.session_state:
 
 st.session_state.generation = llm_answer_query(st.session_state.retrieval)
 
-st.text_input(label="User Query",
-              value="What is the role of the IMF in Kenya?",
-              placeholder='Enter your question',
-              key='user_query')
 
 st.button('Submit')
 st.write(st.session_state.generation)
