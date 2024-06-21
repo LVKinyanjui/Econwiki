@@ -50,6 +50,22 @@ async def async_embed(texts: list[str]):
         coroutines = await asyncio.gather(*tasks)
 
         return coroutines
+    
+async def async_embed_with_postprocess(texts: list[str]) -> list[float]:
+    """Call custom async embedder and return embeddings with an (informal) interface acceptable to downstream operations"""
+
+    # await the asynchronous embedding function
+    # In a jupyter notebook trying to start an event loop with asyncio.run witll result in an error
+    all_embeddings = await async_embed(texts)
+
+    try:
+        raw_embeddings = [sub_embedding['embedding']['values'] 
+                                            for sub_embedding in [embedding['embeddings'] 
+                                                                for embedding in all_embeddings]]
+    except KeyError:
+        raise Exception("Possible HTTP CODE 400: 'Request payload size exceeds the limit: 10000 bytes. Documents may be too large")
+    return raw_embeddings
+
 
 def embed(texts: str):
     """
